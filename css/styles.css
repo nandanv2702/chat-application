@@ -8,6 +8,11 @@ body {
   background-color: rgba(244, 215, 91);
 }
 
+a {
+  color: unset;
+  text-decoration: none;
+}
+
 div {
   padding: 10px;
 }
@@ -42,15 +47,24 @@ div {
 .sidebar-element {
   transition: 0.2s all ease-in-out;
   list-style: none;
+  margin: 10px;
   padding: 10px;
 }
 
 .sidebar-element:hover{
   transition: 0.2s all ease-in-out;
   color: rgba(200, 200, 200);
-  background-color: rgba(30, 30, 30);
+  background-color: rgba(0, 30, 30);
   border-radius: 6px;
 box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3);
+}
+
+.sidebar-element:active{
+  box-shadow: -3px -3px 9px rgba(200,200,200, 0.3), 9px 9px 9px rgba(15,15,15,0.2);
+}
+
+img {
+  max-width: 100%;
 }
 
 .main {
@@ -79,7 +93,7 @@ box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3)
   line-height: 2.25rem;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .sidebar {
     width: 100% !important;
     margin: 0;
