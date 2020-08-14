@@ -40,20 +40,17 @@ div {
 }
 
 .sidebar-element {
+  transition: 0.2s all ease-in-out;
   list-style: none;
-  transition: 0.1s ease-in-out;
   padding: 10px;
 }
 
 .sidebar-element:hover{
-  transition: 0.1s ease-in-out;
+  transition: 0.2s all ease-in-out;
   color: rgba(200, 200, 200);
-}
-
-.sidebar-element:hover::before{
-  width: 40px;
-  height: 10px;
-  color: rgba(200, 200, 200);
+  background-color: rgba(30, 30, 30);
+  border-radius: 6px;
+box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3);
 }
 
 .main {
