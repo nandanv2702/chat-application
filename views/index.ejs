@@ -27,18 +27,26 @@ document.addEventListener('submit', function(e){
 function childElem(){
   var num = document.getElementById('msg-content').childElementCount;
   if(num % 2 !== 0 && num !== 0){
-    return 'left'
+    return 'right'
   }
-  return 'right'
+  return 'left'
 }
 
 //when a message is sent
+var msg_ID = 0;
 socket.on('chat message', function(msg){
+      var parentDiv = document.createElement('div');
+      parentDiv.className += "msg-holder";
+      parentDiv.id = `msg_${msg_ID}`
+      document.getElementById('msg-content').append(parentDiv);
+
       var msgDiv = document.createElement('div');
       var holder = childElem();
       msgDiv.className += `msg ${holder}`;
       msgDiv.innerHTML += msg;
-      document.getElementById('msg-content').append(msgDiv)
+      document.getElementById(`msg_${msg_ID}`).append(msgDiv);
+
+      msg_ID += 1;
     });
 </script>
 <nav class="sidebar">

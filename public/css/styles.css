@@ -93,7 +93,7 @@ img {
   background-color: rgba(30, 30, 30);
   border-radius: 6px;
   box-shadow: 9px 9px 9px rgba(15,15,15,0.4), -3px -3px 9px rgba(200,200,200, 0.3);
-  overflow: scroll;
+  overflow-y: scroll;
   font-size: 1.2rem;
   color: rgba(228, 134, 59, 1);
 }
@@ -103,10 +103,15 @@ img {
   width: 100%;
 }
 
+.msg-holder {
+  display:inline-block;
+  width: 100% !important;
+}
+
 .msg {
   background-color: #222831;
   height: 50px;
-  margin: 10px 0 10px 0;
+  margin: 5px 0 5px 0;
   border-radius: 6px;
   width: 40%;
   transition: 0.15s all ease-in-out;
