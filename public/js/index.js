@@ -1,5 +1,3 @@
-// need to make JS for responsive navbar
-
 // function for auto resizing textarea taken from Stack Overflow
 function init() {
   if (window.attachEvent) {
@@ -8,9 +6,12 @@ function init() {
     };
   } else {
     var observe = function(element, event, handler) {
-      element.addEventListener(event, handler, false);
+      if(element){
+        element.addEventListener(event, handler, false);
+      }
     };
   }
+
   var text = document.getElementById('text');
 
   function resize() {
@@ -21,13 +22,16 @@ function init() {
   function delayedResize() {
     window.setTimeout(resize, 0);
   }
+
   observe(text, 'change', resize);
   observe(text, 'cut', delayedResize);
   observe(text, 'paste', delayedResize);
   observe(text, 'drop', delayedResize);
   observe(text, 'keydown', delayedResize);
 
-  text.focus();
-  text.select();
-  resize();
+  if(text){
+    text.focus();
+    text.select();
+    resize();
+  }
 }

@@ -1,49 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatboard</title>
-  </head>
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-  <script type="text/javascript" src="js/index.js"></script>
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      NodeJS Chat
-    </div>
-    <ul class="sidebar-content" id="sidebar-content-long">
-      <a href="#"><li class="sidebar-element neu-dark">About</li></a>
-      <a href="#"><li class="sidebar-element neu-dark">Contacts</li></a>
-      <a href="#"><li class="sidebar-element neu-dark">Groups</li></a>
-    </ul>
-  </nav>
-  <body onload="init();">
-    <div class="main">
-      <h1>Chat</h1>
-      <div class="chatbox">
-        <div class="chat-content">
-          <div class="msg-content">
-            <div class="msg left">
-              Lorem ipsum dolor sit amet, co lorem lorem lorem
-            </div>
-            <div class="msg right">
-              Lorem ipsum dolor sit amet, co lorem lorem lorem
-            </div>
-            <div class="msg left">
-              Lorem ipsum dolor sit amet, co lorem lorem lorem
-            </div>
-            <div class="msg right">
-              Lorem ipsum dolor sit amet, co lorem lorem lorem
-            </div>
-          </div>
-          <form class="chat-input" method="post" action="">
-            <textarea type="text" name="message" value="" contenteditable="" role="textbox" id="text"></textarea>
-            <button type="submit" name="button">Send</button>
-          </form>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatboard</title>
+</head>
+<link rel="stylesheet" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+<!-- regular js and Socket.io for chat -->
+<script type="text/javascript" src="js/index.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+// Socket.io
+var socket = io();
+
+document.addEventListener('submit', function(e){
+  e.preventDefault();
+  socket.emit('chat message', document.getElementById('text-msg').value);
+  console.log("triggered");
+  document.getElementById('text-msg').value = '';
+  return false;
+});
+
+function childElem(){
+  var num = document.getElementById('msg-content').childElementCount;
+  if(num % 2 !== 0 && num !== 0){
+    return 'left'
+  }
+  return 'right'
+}
+
+//when a message is sent
+socket.on('chat message', function(msg){
+      var msgDiv = document.createElement('div');
+      var holder = childElem();
+      msgDiv.className += `msg ${holder}`;
+      msgDiv.innerHTML += msg;
+      document.getElementById('msg-content').append(msgDiv)
+    });
+</script>
+<nav class="sidebar">
+  <div class="sidebar-header">
+    NodeJS Chat
+  </div>
+  <ul class="sidebar-content" id="sidebar-content-long">
+    <a href="#">
+      <li class="sidebar-element neu-dark">About</li>
+    </a>
+    <a href="#">
+      <li class="sidebar-element neu-dark">Contacts</li>
+    </a>
+    <a href="#">
+      <li class="sidebar-element neu-dark">Groups</li>
+    </a>
+  </ul>
+</nav>
+
+<body onload="init();">
+  <div class="main">
+    <h1>Chat</h1>
+    <div class="chatbox">
+      <div class="chat-content">
+        <div class="msg-content" id="msg-content">
         </div>
+        <form class="chat-input" action="">
+          <textarea type="text" name="message" value="" contenteditable="" role="textbox" id="text-msg"></textarea>
+          <button type="submit" name="button">Send</button>
+        </form>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

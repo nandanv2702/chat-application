@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const socket = require('socket.io');
+const app = express();
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
 
 const port = process.env.PORT || 3000;
-
-const app = express();
 
 app.set('view engine', 'ejs');
 
@@ -15,10 +15,26 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-app.listen(port, () => {
-  console.log('Listening!')
-});
-
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
+
+  socket.on('chat message', (msg) => {
+      io.emit('chat message', msg);
+    });
+});
+
+// this is one instance of 'app' which is why app.listen() would cause a EADDRINUSE error
+http.listen(port, () => {
+  console.log('listening on *:3000');
 });
