@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI Experiment</title>
+    <title>Chatboard</title>
   </head>
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-  <script type="text/javascript" src="index.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
   <nav class="sidebar">
     <div class="sidebar-header">
       NodeJS Chat
@@ -23,10 +23,26 @@
     <div class="main">
       <h1>Chat</h1>
       <div class="chatbox">
-        <form class="chat-input">
-          <textarea type="text" name="message" value="" contenteditable="" role="textbox" id="text"></textarea>
-          <button type="submit" name="button">Send</button>
-        </form>
+        <div class="chat-content">
+          <div class="msg-content">
+            <div class="msg left">
+              Lorem ipsum dolor sit amet, co lorem lorem lorem
+            </div>
+            <div class="msg right">
+              Lorem ipsum dolor sit amet, co lorem lorem lorem
+            </div>
+            <div class="msg left">
+              Lorem ipsum dolor sit amet, co lorem lorem lorem
+            </div>
+            <div class="msg right">
+              Lorem ipsum dolor sit amet, co lorem lorem lorem
+            </div>
+          </div>
+          <form class="chat-input" method="post" action="">
+            <textarea type="text" name="message" value="" contenteditable="" role="textbox" id="text"></textarea>
+            <button type="submit" name="button">Send</button>
+          </form>
+        </div>
       </div>
     </div>
   </body>

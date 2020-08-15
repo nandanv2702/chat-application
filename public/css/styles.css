@@ -19,7 +19,7 @@ div {
   padding: 10px;
 }
 
-/* Neumorphism setting */
+/* Neumorphism setting; used sometimes */
 
 .neu-dark {
   background-color: rgba(0, 30, 30);
@@ -46,6 +46,7 @@ box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3)
   padding: 0;
   height: 100vh;
   width: 300px;
+  min-width: 100px;
   /* background-color: rgba(45, 45, 45); */
   background-color: #222831;
 }
@@ -82,11 +83,51 @@ img {
   padding: 20px;
 }
 
+/* for chat history and chat content */
+.chat-content {
+  display: flex;
+  height: 500px;
+  width: 65vw;
+  min-width: 50vw;
+  border-radius: 6px;
+  background-color: rgba(30, 30, 30);
+  border-radius: 6px;
+  box-shadow: 9px 9px 9px rgba(15,15,15,0.4), -3px -3px 9px rgba(200,200,200, 0.3);
+  overflow: scroll;
+  font-size: 1.2rem;
+  color: rgba(228, 134, 59, 1);
+}
+
+.msg-content {
+  margin: 20px;
+  width: 100%;
+}
+
+.msg {
+  background-color: #222831;
+  height: 50px;
+  margin: 10px 0 10px 0;
+  border-radius: 6px;
+  width: 40%;
+  transition: 0.15s all ease-in-out;
+  box-shadow: inset 1px 1px 2px #2b2b2b, inset -1px -1px 2px rgba(91, 91, 91, 0.5);
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float:right;
+}
+
+/* for message input area */
+
 .chat-input {
+  position: absolute;
   display: flex;
   place-items: center;
   justify-content: space-between;
-  position: absolute;
   bottom: 0;
   margin: 0;
   padding: 0;
@@ -95,20 +136,20 @@ img {
 
 .chatbox textarea {
   transition: 0.15s all ease-in-out;
+  padding: 10px 10px 10px 10px;
   min-width: 50vw;
   width: 65vw;
+  bottom: 0;
   max-width: 65vw;
+  min-height: 27px;
   max-height: 100px;
-  height: 10px;
-  min-height: 10px;
-  text-indent: 10px;
-  padding-top: 10px;
   background-color: #3f3f44;
   border-radius: 6px;
   box-shadow: inset 2px 2px 5px #2b2b2b, inset -5px -5px 10px rgba(91, 91, 91, 0.5);
   border: none;
+  color: white;
+  font-size: 1.2rem;
   caret-color: white;
-  /* from stack overflow */
   outline: none;
   resize: none;
 }
@@ -118,6 +159,8 @@ img {
   box-shadow: inset 1px 1px 2px #2b2b2b, inset -1px -1px 2px rgba(91, 91, 91, 0.5);
 }
 
+/* for the send button */
+
 button {
   transition: 0.15s all ease-in-out;
   border-radius: 6px;
@@ -125,11 +168,10 @@ button {
   background-color: rgba(228, 134, 59, 1);
   padding: 10px;
   border: none;
-  font-size: 16px;
+  font-size: 1.2rem;
   box-shadow: -5px -5px 10px rgba(255,0,0,0.5), 5px 5px 10px rgba(0,0,0,0.2);
   text-align: center;
   width: 100px;
-  height: auto;
 }
 
 button:focus {
@@ -140,8 +182,13 @@ button:focus {
 
 button:hover{
   transition: 0.15s all ease-in-out;
-  box-shadow: inset -1px -1px 2px rgba(255,0,0,0.5), inset 1px 1px 2px rgba(0,0,0,0.2);
+  box-shadow: -1px -1px 2px rgba(255,0,0,0.5), 1px 1px 2px rgba(0,0,0,0.2);
+}
 
+
+button:active{
+  transition: 0.15s all ease-in-out;
+  box-shadow: inset -1px -1px 10px rgba(255,0,0,0.5), inset 1px 1px 10px rgba(0,0,0,0.2);
 }
 
 @media screen and (max-width: 800px) {
