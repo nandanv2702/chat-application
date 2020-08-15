@@ -5,7 +5,9 @@
 }
 
 body {
-  background-color: rgba(244, 215, 91);
+  background-color: #3f3f44;
+  /* possible colors: #bbe1fa, #eae7af, #eae7af, #acdbdf, #eae1e1 */
+  color: white;
 }
 
 a {
@@ -17,6 +19,24 @@ div {
   padding: 10px;
 }
 
+/* Neumorphism setting */
+
+.neu-dark {
+  background-color: rgba(0, 30, 30);
+  border-radius: 6px;
+box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3);
+}
+
+.neu-dark:hover{
+  transition: 0.2s all ease-in-out;
+  color: rgba(251, 251, 251);
+  background-color: rgba(0, 35, 35);
+}
+
+.neu-dark:active{
+  box-shadow: -3px -3px 9px rgba(200,200,200, 0.3), 9px 9px 9px rgba(15,15,15,0.2);
+}
+
 /* Desktop view navbar elements */
 
 .sidebar {
@@ -26,7 +46,8 @@ div {
   padding: 0;
   height: 100vh;
   width: 300px;
-  background-color: rgba(45, 45, 45);
+  /* background-color: rgba(45, 45, 45); */
+  background-color: #222831;
 }
 
 .sidebar-header {
@@ -39,7 +60,6 @@ div {
 
 .sidebar-content {
   padding: 15px;
-  font-family: sans-serif;
   font-size: 1.3rem;
   color: rgba(134, 134, 134);
 }
@@ -49,18 +69,7 @@ div {
   list-style: none;
   margin: 10px;
   padding: 10px;
-}
-
-.sidebar-element:hover{
-  transition: 0.2s all ease-in-out;
   color: rgba(200, 200, 200);
-  background-color: rgba(0, 30, 30);
-  border-radius: 6px;
-box-shadow: 9px 9px 9px rgba(15,15,15,0.2), -3px -3px 9px rgba(200,200,200, 0.3);
-}
-
-.sidebar-element:active{
-  box-shadow: -3px -3px 9px rgba(200,200,200, 0.3), 9px 9px 9px rgba(15,15,15,0.2);
 }
 
 img {
@@ -68,29 +77,71 @@ img {
 }
 
 .main {
+  display: block;
   margin-left: 300px;
   padding: 20px;
 }
 
-.main-title {
+.chat-input {
+  display: flex;
+  place-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+.chatbox textarea {
+  transition: 0.15s all ease-in-out;
+  min-width: 50vw;
+  width: 65vw;
+  max-width: 65vw;
+  max-height: 100px;
+  height: 10px;
+  min-height: 10px;
+  text-indent: 10px;
+  padding-top: 10px;
+  background-color: #3f3f44;
+  border-radius: 6px;
+  box-shadow: inset 2px 2px 5px #2b2b2b, inset -5px -5px 10px rgba(91, 91, 91, 0.5);
+  border: none;
+  caret-color: white;
+  /* from stack overflow */
+  outline: none;
+  resize: none;
+}
+
+.chatbox textarea:focus {
+  transition: 0.15s all ease-in-out;
+  box-shadow: inset 1px 1px 2px #2b2b2b, inset -1px -1px 2px rgba(91, 91, 91, 0.5);
+}
+
+button {
+  transition: 0.15s all ease-in-out;
+  border-radius: 6px;
+  margin-left: 15px;
+  background-color: rgba(228, 134, 59, 1);
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  box-shadow: -5px -5px 10px rgba(255,0,0,0.5), 5px 5px 10px rgba(0,0,0,0.2);
   text-align: center;
-  padding: 20px;
-  font-size: 3rem;
+  width: 100px;
+  height: auto;
 }
 
-.title {
-  font-size: 2rem;
+button:focus {
+  transition: 0.15s all ease-in-out;
+  border:none;
+  outline: 0;
 }
 
-.date {
-  opacity: 0.5;
-}
+button:hover{
+  transition: 0.15s all ease-in-out;
+  box-shadow: inset -1px -1px 2px rgba(255,0,0,0.5), inset 1px 1px 2px rgba(0,0,0,0.2);
 
-.content {
-  font-size: 1.22rem;
-  text-align: justify;
-  font-family: 'Lato', sans-serif;
-  line-height: 2.25rem;
 }
 
 @media screen and (max-width: 800px) {
