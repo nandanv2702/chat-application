@@ -13,42 +13,51 @@
 <script type="text/javascript" src="js/index.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
-// Socket.io
-var socket = io();
+  // Socket.io
+  var socket = io();
 
-document.addEventListener('submit', function(e){
-  e.preventDefault();
-  socket.emit('chat message', document.getElementById('text-msg').value);
-  console.log("triggered");
-  document.getElementById('text-msg').value = '';
-  return false;
-});
+  // checks when text is submitted
+  document.addEventListener('submit', function(e) {
+    e.preventDefault();
+    socket.emit('chat message', document.getElementById('text-msg').value);
+    console.log("triggered");
+    document.getElementById('text-msg').value = '';
+    return false;
+  });
 
-function childElem(){
-  var num = document.getElementById('msg-content').childElementCount;
-  if(num % 2 !== 0 && num !== 0){
-    return 'right'
+  // to find out which side to add message to (sender-receiver style)
+  function childElem() {
+    var num = document.getElementById('msg-content').childElementCount;
+    if (num % 2 !== 0 && num !== 0) {
+      return 'right'
+    }
+    return 'left'
   }
-  return 'left'
-}
 
-//when a message is sent
-var msg_ID = 0;
-socket.on('chat message', function(msg){
-      var parentDiv = document.createElement('div');
-      parentDiv.className += "msg-holder";
-      parentDiv.id = `msg_${msg_ID}`
-      document.getElementById('msg-content').append(parentDiv);
+  //when a message is sent
+  var msg_ID = 0;
+  socket.on('chat message', function(msg) {
+    var parentDiv = document.createElement('div');
+    parentDiv.className += "msg-holder";
+    parentDiv.id = `msg_${msg_ID}`
+    document.getElementById('msg-content').append(parentDiv);
 
-      var msgDiv = document.createElement('div');
-      var holder = childElem();
-      msgDiv.className += `msg ${holder}`;
-      msgDiv.innerHTML += msg;
-      document.getElementById(`msg_${msg_ID}`).append(msgDiv);
+    var msgDiv = document.createElement('div');
+    var holder = childElem();
+    msgDiv.className += `msg ${holder}`;
+    msgDiv.innerHTML += msg;
+    document.getElementById(`msg_${msg_ID}`).append(msgDiv);
 
-      msg_ID += 1;
-    });
+    msg_ID += 1;
+
+    // keeps the chat content area pinned to bottom so that you can see when someone sends a new message
+    var messageBody = document.getElementById('chat-content');
+    if (messageBody) {
+      messageBody.scrollTop = messageBody.scrollHeight;
+    }
+  });
 </script>
+
 <nav class="sidebar">
   <div class="sidebar-header">
     NodeJS Chat
@@ -70,7 +79,7 @@ socket.on('chat message', function(msg){
   <div class="main">
     <h1>Chat</h1>
     <div class="chatbox">
-      <div class="chat-content">
+      <div class="chat-content" id="chat-content">
         <div class="msg-content" id="msg-content">
         </div>
         <form class="chat-input" action="">

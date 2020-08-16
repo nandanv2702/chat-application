@@ -87,7 +87,7 @@ img {
 .chat-content {
   display: flex;
   height: 500px;
-  width: 65vw;
+  width: 70vw;
   min-width: 50vw;
   border-radius: 6px;
   background-color: rgba(30, 30, 30);
