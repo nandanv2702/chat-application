@@ -19,6 +19,8 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+const users = {}
+
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
@@ -30,12 +32,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('chat message', (msg) => {
+    socket.broadcast.emit('chat message', {msg: msg, name: users[socket.id]});
     console.log('message: ' + msg);
   });
 
-  socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-    });
+  socket.on('new-user', (name) => {
+    users[socket.id] = name;
+    console.log(`Users are: ${users}`);
+    socket.broadcast.emit('user-connected', name);
+  })
 });
 
 // this is one instance of 'app' which is why app.listen() would cause a EADDRINUSE error

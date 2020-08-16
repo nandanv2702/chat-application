@@ -1,5 +1,15 @@
 // function for auto resizing textarea taken from Stack Overflow
-function init() {
+const name = prompt("what is your name?");
+
+// adds a new user to the DOM when someone joins
+function userConn(name){
+  var elem = document.createElement('p');
+  elem.innerText = `${name} joined`;
+  document.getElementById('msg-content').append(elem);
+}
+
+function init(){
+  userConn('You');
   if (window.attachEvent) {
     var observe = function(element, event, handler) {
       element.attachEvent('on' + event, handler);
@@ -35,3 +45,56 @@ function init() {
     resize();
   }
 }
+
+// Socket.io
+var socket = io('/');
+
+// prompts for a name and emits that to all users
+socket.emit('new-user', name);
+console.log(name);
+
+// checks when text is submitted
+document.addEventListener('submit', function(e) {
+  e.preventDefault();
+  socket.emit('chat message', document.getElementById('text-msg').value);
+  appendMessage({name: name, msg: document.getElementById('text-msg').value}, 'right');
+  updateHeight();
+  document.getElementById('text-msg').value = '';
+  return false;
+});
+
+//when a message is sent
+socket.on('chat message', function(data) {
+  appendMessage(data, 'left');
+  updateHeight();
+});
+
+//when a new user connects
+socket.on('user-connected', function(name) {
+  userConn(name);
+});
+
+// appends the message to the body
+var msg_ID = 0;
+function appendMessage(data, side){
+  var parentDiv = document.createElement('div');
+  parentDiv.className += "msg-holder";
+  parentDiv.id = `msg_${msg_ID}`
+  document.getElementById('msg-content').append(parentDiv);
+
+  var msgDiv = document.createElement('div');
+  msgDiv.className += `msg ${side}`;
+  var message = `${data.name}: ${data.msg}`;
+  msgDiv.innerHTML += message;
+  document.getElementById(`msg_${msg_ID}`).append(msgDiv);
+
+  msg_ID += 1;
+};
+
+// keeps the chat content area pinned to bottom so that you can see when someone sends a new message
+function updateHeight(){
+  var messageBody = document.getElementById('chat-content');
+  if (messageBody) {
+    messageBody.scrollTop = messageBody.scrollHeight;
+  };
+};
