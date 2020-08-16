@@ -2,14 +2,14 @@
 const name = prompt("what is your name?");
 
 // adds a new user to the DOM when someone joins
-function userConn(name){
+function userStat(name, conn){
   var elem = document.createElement('p');
-  elem.innerText = `${name} joined`;
+  elem.innerText = `${name} ${conn}`;
   document.getElementById('msg-content').append(elem);
 }
 
 function init(){
-  userConn('You');
+  userStat('You', 'joined');
   if (window.attachEvent) {
     var observe = function(element, event, handler) {
       element.attachEvent('on' + event, handler);
@@ -71,7 +71,12 @@ socket.on('chat message', function(data) {
 
 //when a new user connects
 socket.on('user-connected', function(name) {
-  userConn(name);
+  userStat(name, 'joined');
+});
+
+//when a user disconnects
+socket.on('user-disconnected', function(name) {
+  userStat(name, 'disconnected');
 });
 
 // appends the message to the body

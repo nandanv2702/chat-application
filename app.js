@@ -24,6 +24,8 @@ const users = {}
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
+    socket.broadcast.emit('user-disconnected', users[socket.id]);
+    delete users[socket.id];
     console.log('user disconnected');
   });
 
