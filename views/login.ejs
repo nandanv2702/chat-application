@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Chat | Login</title>
+  </head>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+  <body>
+    <h1 class="login-title">Login</h1>
+    <div class="login-center">
+      <div class="login-box login-center">
+        <!-- Makes POST request to /login route -->
+        <form action="/login" method="POST">
+          <div class="login-email">
+            <h2><label for="email">Email</label></h2>
+            <input type="email" class="field-input" name="username" required>
+          </div>
+          <div class="login-pwd">
+            <h2><label for="password">Password</label></h2>
+            <input type="password" class="field-input" name="password" required>
+          </div>
+          <button type="submit" class="right" style="margin-right: 10px;">Login</button>
+        </form>
+        </div>
+    </div>
+  </body>
+</html>

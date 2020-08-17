@@ -197,6 +197,64 @@ button:active{
   box-shadow: inset -1px -1px 10px rgba(255,0,0,0.5), inset 1px 1px 10px rgba(0,0,0,0.2);
 }
 
+/* Login and register page styling */
+
+.login-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0 30px 0;
+  font-size: 3rem;
+}
+
+.login-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  height: 400px;
+  background-color: rgba(20,20,20,1);
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+box-shadow: 9px 9px 9px rgba(0,0,0,1), -3px -3px 9px rgba(200,200,200, 1);
+}
+
+.field-input {
+  margin: 20px 0 20px 0;
+  width: 100%;
+  transition: 0.15s all ease-in-out;
+  padding: 10px 10px 10px 10px;
+  min-width: 50vw;
+  width: 65vw;
+  bottom: 0;
+  max-width: 65vw;
+  min-height: 27px;
+  max-height: 100px;
+  background-color: #3f3f44;
+  border-radius: 6px;
+  box-shadow: inset 2px 2px 15px #2b2b2b, inset -5px -5px 10px rgba(91, 91, 91, 0.5);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  caret-color: white;
+  outline: none;
+  resize: none;
+}
+
+.field-input:focus {
+  transition: 0.15s all ease-in-out;
+  box-shadow: inset 1px 1px 2px #2b2b2b, inset -1px -1px 2px rgba(91, 91, 91, 0.5);
+}
+
+.logreg {
+  width: 150px;
+  background-color: rgba(182,215,228,1);
+  box-shadow: -5px -5px 5px rgba(182,215,228,0.3), 5px 5px 10px rgba(0,0,0,0.5);
+}
+
 @media screen and (max-width: 800px) {
   .sidebar {
     width: 100% !important;
