@@ -35,6 +35,7 @@ mongoose.connect('mongodb://localhost:27017/chatDB', {
 });
 
 const userSchema = new mongoose.Schema({
+  name: String,
   email: String,
   password: String
 });
@@ -50,7 +51,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('index');
+    res.render('index', {name: req.user.name});
   } else {
     res.redirect('/register');
   };
@@ -62,9 +63,11 @@ app.route('/register')
   })
   .post(function(req, res) {
     User.register({
+      name: req.body.name,
       username: req.body.username
     }, req.body.password, function(err, user) {
       if (err) {
+        console.log(err);
         console.log('error during registration');
         res.redirect('/register');
       } else {
@@ -81,6 +84,7 @@ app.route('/login')
   })
   .post(function(req, res) {
     const user = new User({
+      name: req.body.name,
       username: req.body.username,
       password: req.body.password
     });
@@ -97,7 +101,7 @@ app.route('/login')
     });
   });
 
-const users = {}
+const users = {};
 
 io.on('connection', (socket) => {
   console.log('a user connected');
@@ -107,7 +111,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 
-  socket.on('connect', () => {
+  socket.on('connect', (req) => {
     io.emit('connection-msg', msg)
   });
 
@@ -117,6 +121,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-user', (name) => {
+    console.log("new user name is: " + name);
     users[socket.id] = name;
     console.log(`Users are: ${users}`);
     socket.broadcast.emit('user-connected', name);

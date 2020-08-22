@@ -1,14 +1,22 @@
 // function for auto resizing textarea taken from Stack Overflow
-const name = prompt("what is your name?");
+var name = 'not changed yet';
+
+// Socket.io
+var socket = io('/');
 
 // adds a new user to the DOM when someone joins
 function userStat(name, conn){
   var elem = document.createElement('p');
   elem.innerText = `${name} ${conn}`;
+  elem.style.margin = '10px 0 10px 0';
   document.getElementById('msg-content').append(elem);
+  updateHeight();
 }
 
 function init(){
+  name = document.getElementById('name').textContent.split(' joined!')[0];
+  // prompts for a name and emits that to all users
+  socket.emit('new-user', name);
   userStat('You', 'joined');
   if (window.attachEvent) {
     var observe = function(element, event, handler) {
@@ -46,20 +54,15 @@ function init(){
   }
 }
 
-// Socket.io
-var socket = io('/');
-
-// prompts for a name and emits that to all users
-socket.emit('new-user', name);
-console.log(name);
-
 // checks when text is submitted
 document.addEventListener('submit', function(e) {
   e.preventDefault();
-  socket.emit('chat message', document.getElementById('text-msg').value);
-  appendMessage({name: name, msg: document.getElementById('text-msg').value}, 'right');
-  updateHeight();
-  document.getElementById('text-msg').value = '';
+  if(document.getElementById('text-msg').value !== ''){
+    socket.emit('chat message', document.getElementById('text-msg').value);
+    appendMessage({name: name, msg: document.getElementById('text-msg').value}, 'right');
+    updateHeight();
+    document.getElementById('text-msg').value = '';
+  };
   return false;
 });
 
@@ -72,16 +75,19 @@ socket.on('chat message', function(data) {
 //when a new user connects
 socket.on('user-connected', function(name) {
   userStat(name, 'joined');
+  updateHeight();
 });
 
 //when a user disconnects
 socket.on('user-disconnected', function(name) {
   userStat(name, 'disconnected');
+  updateHeight();
 });
 
 // appends the message to the body
 var msg_ID = 0;
 function appendMessage(data, side){
+  console.log(data);
   var parentDiv = document.createElement('div');
   parentDiv.className += "msg-holder";
   parentDiv.id = `msg_${msg_ID}`
