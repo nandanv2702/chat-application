@@ -12,7 +12,7 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 const port = process.env.PORT || 3000;
 
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
@@ -51,7 +51,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('index', {name: req.user.name});
+    res.render('index', {name: req.user.name, rooms: rooms});
   } else {
     res.redirect('/register');
   };
@@ -100,6 +100,21 @@ app.route('/login')
       }
     });
   });
+
+const rooms = {Name: {}, More: {}};
+
+app.route('/rooms')
+.post(function(req, res){
+  if(rooms[req.body.room] !== null){
+    res.redirect('/')
+  }
+  rooms[req.body.room] = {users: {}};
+  res.redirect(req.body.room);
+});
+
+app.get('/rooms/:room', function(req, res){
+  res.render('room', {roomName: req.params.room});
+});
 
 const users = {};
 

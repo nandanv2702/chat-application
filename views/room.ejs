@@ -6,33 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatboard</title>
 </head>
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="/css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- regular js and Socket.io for chat -->
 <script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
 
 <nav class="sidebar">
   <div class="sidebar-header">
     NodeJS Chat
   </div>
   <ul class="sidebar-content" id="sidebar-content-long">
-    <a href="#profile">
-      <li class="sidebar-element neu-dark">Profile</li>
-    </a>
-    <a href="#rooms">
-      <li class="sidebar-element neu-dark">Rooms</li>
-    </a>
-    <a href="#messages">
-      <li class="sidebar-element neu-dark">Messages</li>
+    <a href="/">
+      <li class="sidebar-element neu-dark"><i class="fa fa-angle-left" aria-hidden="true"></i> back</li>
     </a>
   </ul>
 </nav>
 
 <body onload="init();">
   <div class="main" style="display: none;">
-    <h2 id="name"><%= name %> joined!</h2>
+    <h2 id="name"><%= roomName %> joined!</h2>
     <div class="chatbox">
       <div class="chat-content" id="chat-content">
         <div class="msg-content" id="msg-content">
@@ -47,22 +42,8 @@
 
   <!-- Creating rooms -->
   <div class="main" id="rooms">
-    <h1>Rooms</h1>
-    <% Object.keys(rooms).forEach(room => { %>
-        <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
-          <%= room %> <a href=/rooms/<%=room%> style="float: right; color: #A9A9A9">Join</a>
-        </div>
-    <% }) %>
-  </div>
+    <h1>Room name is <%= roomName %> </h1>
 
-  <!-- Personal messages -->
-  <div class="main" id="messages" style="display:none;">
-    <h1>there's messages here</h1>
-  </div>
-
-  <!-- Possible user profile? -->
-  <div class="main" id="profile" style="display:none;">
-    <h1>there's other shit here</h1>
   </div>
 </body>
 
