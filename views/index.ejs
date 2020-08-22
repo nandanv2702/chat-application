@@ -18,20 +18,20 @@
     NodeJS Chat
   </div>
   <ul class="sidebar-content" id="sidebar-content-long">
-    <a href="#">
-      <li class="sidebar-element neu-dark">About</li>
+    <a href="#profile">
+      <li class="sidebar-element neu-dark">Profile</li>
     </a>
-    <a href="#">
-      <li class="sidebar-element neu-dark">Contacts</li>
+    <a href="#rooms">
+      <li class="sidebar-element neu-dark">Rooms</li>
     </a>
-    <a href="#">
-      <li class="sidebar-element neu-dark">Groups</li>
+    <a href="#messages">
+      <li class="sidebar-element neu-dark">Messages</li>
     </a>
   </ul>
 </nav>
 
 <body onload="init();">
-  <div class="main">
+  <div class="main" style="display: none;">
     <h2 id="name"><%= name %> joined!</h2>
     <div class="chatbox">
       <div class="chat-content" id="chat-content">
@@ -43,6 +43,21 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- Creating rooms -->
+  <div class="main" id="rooms" style="display:none;">
+    <h1>there's text here</h1>
+  </div>
+
+  <!-- Personal messages -->
+  <div class="main" id="messages" style="display:none;">
+    <h1>there's messages here</h1>
+  </div>
+
+  <!-- Possible user profile? -->
+  <div class="main" id="profile" style="display:none;">
+    <h1>there's other shit here</h1>
   </div>
 </body>
 

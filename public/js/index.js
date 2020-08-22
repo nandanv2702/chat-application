@@ -14,6 +14,7 @@ function userStat(name, conn){
 }
 
 function init(){
+  sidebarswitch();
   name = document.getElementById('name').textContent.split(' joined!')[0];
   // prompts for a name and emits that to all users
   socket.emit('new-user', name);
@@ -65,6 +66,23 @@ document.addEventListener('submit', function(e) {
   };
   return false;
 });
+
+// sidebar content switcher
+function sidebarswitch(){
+  document.getElementById("sidebar-content-long").addEventListener("click",function(e) {
+    let target = "#" + e.target.innerText.toLowerCase();
+    // console.log(target);
+      document.getElementById("sidebar-content-long").childNodes.forEach(node => {
+        if(node.attributes !== undefined){
+          if(node.attributes[0].value.substring(1) === e.target.innerText.toLowerCase()){
+              document.getElementById(node.attributes[0].value.substring(1)).style.display = 'inherit'
+          } else {
+            document.getElementById(node.attributes[0].value.substring(1)).style.display = 'none'
+          }
+        };
+      });
+  });
+}
 
 //when a message is sent
 socket.on('chat message', function(data) {
