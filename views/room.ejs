@@ -13,6 +13,9 @@
 <!-- regular js and Socket.io for chat -->
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript">
+  var roomName = `<%=roomName%>`
+</script>
 
 <nav class="sidebar">
   <div class="sidebar-header">
@@ -26,8 +29,9 @@
 </nav>
 
 <body onload="init();">
-  <div class="main" style="display: none;">
-    <h2 id="name"><%= roomName %> joined!</h2>
+  <div class="main">
+    <div class="" id="name" style="display:none;"><%=name%></div>
+    <h2 id="">Room: <%= roomName %></h2>
     <div class="chatbox">
       <div class="chat-content" id="chat-content">
         <div class="msg-content" id="msg-content">
@@ -38,12 +42,6 @@
         </form>
       </div>
     </div>
-  </div>
-
-  <!-- Creating rooms -->
-  <div class="main" id="rooms">
-    <h1>Room name is <%= roomName %> </h1>
-
   </div>
 </body>
 

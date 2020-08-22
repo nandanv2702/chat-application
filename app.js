@@ -105,15 +105,23 @@ const rooms = {Name: {}, More: {}};
 
 app.route('/rooms')
 .post(function(req, res){
-  if(rooms[req.body.room] !== null){
-    res.redirect('/')
-  }
-  rooms[req.body.room] = {users: {}};
-  res.redirect(req.body.room);
+  if (req.isAuthenticated()) {
+    if(rooms[req.body.room] !== null){
+      res.redirect('/')
+    };
+    rooms[req.body.room] = {users: {}};
+    res.redirect(req.body.room);
+} else {
+  res.redirect('/login')
+}
 });
 
 app.get('/rooms/:room', function(req, res){
-  res.render('room', {roomName: req.params.room});
+  if(req.isAuthenticated()){
+    res.render('room', {name: req.user.name, roomName: req.params.room});
+  } else {
+    res.redirect('/login')
+  };
 });
 
 const users = {};
@@ -121,25 +129,28 @@ const users = {};
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
-    socket.broadcast.emit('user-disconnected', users[socket.id]);
+    socket.to(roomName).emit('user-disconnected', users[socket.id]);
+    socket.leave(roomName);
     delete users[socket.id];
     console.log('user disconnected');
   });
 
   socket.on('connect', (req) => {
-    io.emit('connection-msg', msg)
+    io.to(roomName).emit('connection-msg', msg);
   });
 
-  socket.on('chat message', (msg) => {
-    socket.broadcast.emit('chat message', {msg: msg, name: users[socket.id]});
+  socket.on('chat message', (msg, roomName) => {
+    socket.to(roomName).broadcast.emit('chat message', {msg: msg, name: users[socket.id]});
     console.log('message: ' + msg);
   });
 
-  socket.on('new-user', (name) => {
+  socket.on('new-user', (name, roomName) => {
+    console.log("room name is: " + roomName);
     console.log("new user name is: " + name);
     users[socket.id] = name;
+    socket.join(roomName);
     console.log(`Users are: ${users}`);
-    socket.broadcast.emit('user-connected', name);
+    socket.to(roomName).broadcast.emit('user-connected', name);
   })
 });
 

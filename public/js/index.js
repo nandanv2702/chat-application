@@ -17,7 +17,7 @@ function init(){
   sidebarswitch();
   name = document.getElementById('name').textContent.split(' joined!')[0];
   // prompts for a name and emits that to all users
-  socket.emit('new-user', name);
+  socket.emit('new-user', name, roomName);
   userStat('You', 'joined');
   if (window.attachEvent) {
     var observe = function(element, event, handler) {
@@ -59,7 +59,7 @@ function init(){
 document.addEventListener('submit', function(e) {
   e.preventDefault();
   if(document.getElementById('text-msg').value !== ''){
-    socket.emit('chat message', document.getElementById('text-msg').value);
+    socket.emit('chat message', document.getElementById('text-msg').value, roomName);
     appendMessage({name: name, msg: document.getElementById('text-msg').value}, 'right');
     updateHeight();
     document.getElementById('text-msg').value = '';
@@ -98,6 +98,7 @@ socket.on('user-connected', function(name) {
 
 //when a user disconnects
 socket.on('user-disconnected', function(name) {
+  console.log('triggered')
   userStat(name, 'disconnected');
   updateHeight();
 });
@@ -105,7 +106,6 @@ socket.on('user-disconnected', function(name) {
 // appends the message to the body
 var msg_ID = 0;
 function appendMessage(data, side){
-  console.log(data);
   var parentDiv = document.createElement('div');
   parentDiv.className += "msg-holder";
   parentDiv.id = `msg_${msg_ID}`
