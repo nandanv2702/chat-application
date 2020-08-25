@@ -128,25 +128,26 @@ app.get('/rooms/:room', function(req, res) {
   if (req.isAuthenticated() && Object.keys(rooms) !== null) {
     res.render('room', {
       name: req.user.name,
-      roomName: req.params.room
+      roomName: decodeURI(req.params.room)
     });
   } else {
     res.redirect('/')
   };
 });
 
-app.get('/logout', function (req, res){
+app.get('/logout', function(req, res) {
   // destroys the session and ensures a safe logout
-  req.session.destroy(function (err) {
-    if(!err){
+  req.session.destroy(function(err) {
+    if (!err) {
       res.redirect('/');
-    }
+    };
   });
 });
 
-app.post('/newroom', function(req, res){
-  console.log(req.body);
-  res.redirect('/');
+app.post('/newroom', function(req, res) {
+  var newRoomName = req.body.newroom.replace(/\s\s+/g, ' ')
+  rooms[newRoomName] = [];
+  res.redirect(`/rooms/${newRoomName}`);
 });
 
 const users = {};
@@ -179,7 +180,7 @@ io.on('connection', (socket) => {
     console.log("new user name is: " + name);
     users[socket.id] = name;
     socket.join(roomName);
-    rooms[roomName].push(users[socket.id]);
+    rooms[decodeURI(roomName)].push(users[socket.id]);
     console.log(`Users are: ${JSON.stringify(users)}`);
     socket.to(roomName).emit('user-connected', name);
   })

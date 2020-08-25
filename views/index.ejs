@@ -52,7 +52,7 @@
     <h1>Rooms</h1>
     <% Object.keys(rooms).forEach(room => { %>
         <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
-          <%= room %> <a href=/rooms/<%=room%> style="float: right; color: #A9A9A9">Join</a>
+          <%= room %> <a href=/rooms/<%=encodeURI(room)%> style="float: right; color: #A9A9A9">Join</a>
         </div>
     <% }) %>
     <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
