@@ -256,6 +256,22 @@ box-shadow: 9px 9px 9px rgba(0,0,0,1), -3px -3px 9px rgba(200,200,200, 1);
   box-shadow: -5px -5px 5px rgba(182,215,228,0.3), 5px 5px 10px rgba(0,0,0,0.5);
 }
 
+/* for new room form input*/
+.new-room {
+  resize: none;
+  height: 25px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+}
+
+.new-room:focus {
+  outline:none;
+}
+
 @media screen and (max-width: 800px) {
   .sidebar {
     width: 100% !important;

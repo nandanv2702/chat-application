@@ -9,8 +9,7 @@
 <link rel="stylesheet" href="css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-<!-- regular js and Socket.io for chat -->
-
+<!-- regular js -->
 <script type="text/javascript" src="js/index.js"></script>
 
 <nav class="sidebar">
@@ -26,6 +25,9 @@
     </a>
     <a href="#messages">
       <li class="sidebar-element neu-dark">Messages</li>
+    </a>
+    <a href="/logout">
+      <li class="sidebar-element neu-dark">Logout</li>
     </a>
   </ul>
 </nav>
@@ -53,6 +55,14 @@
           <%= room %> <a href=/rooms/<%=room%> style="float: right; color: #A9A9A9">Join</a>
         </div>
     <% }) %>
+    <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
+      <form class="" action="/newroom" method="post" id="newroom-form">
+        <!-- <input type="text" class="new-room" name="" value="" placeholder="Room Name"> -->
+        <textarea type="text" name="newroom" value="" class="new-room" contenteditable="" role="textbox" id="newroom" placeholder="Create New Room"></textarea>
+        <a style="float: right; color: #A9A9A9" onclick="newroomform()">Create</a>
+        <!-- <button type="submit" name="button" style="float: right; margin:0; padding: 0;" action="">Create</button> -->
+      </form>
+    </div>
   </div>
 
   <!-- Personal messages -->

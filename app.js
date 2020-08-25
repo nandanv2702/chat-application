@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
       rooms: rooms
     });
   } else {
-    res.redirect('/register');
+    res.redirect('/login');
   };
 });
 
@@ -133,6 +133,20 @@ app.get('/rooms/:room', function(req, res) {
   } else {
     res.redirect('/')
   };
+});
+
+app.get('/logout', function (req, res){
+  // destroys the session and ensures a safe logout
+  req.session.destroy(function (err) {
+    if(!err){
+      res.redirect('/');
+    }
+  });
+});
+
+app.post('/newroom', function(req, res){
+  console.log(req.body);
+  res.redirect('/');
 });
 
 const users = {};

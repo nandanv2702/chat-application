@@ -108,3 +108,10 @@ function updateHeight(){
     messageBody.scrollTop = messageBody.scrollHeight;
   };
 };
+
+// to create a new room
+function newroomform(){
+  if(document.getElementById('newroom-form')['newroom'].value !== ''){
+    document.getElementById('newroom-form').submit();
+  };
+};
