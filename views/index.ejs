@@ -52,20 +52,18 @@
   <div class="main" id="rooms">
     <h1>Rooms</h1>
     <% Object.keys(rooms).forEach(room => { %>
-      <div class="" style="display: flex; flex-direction: row; height: inherit; margin: 0; padding: 0;">
-        <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem; float: left;">
-          <%= room %> <a href=/rooms/<%=encodeURI(room)%> style="float: right; color: #A9A9A9">Join</a>
-        </div>
-        <a style="display: flex; float: right; justify-content: center; align-items: center;" href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
+    <div class="" style="display: flex; flex-direction: row; height: inherit; margin: 0; padding: 0;">
+      <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem; float: left;">
+        <%= room %> <a href=/rooms/<%=encodeURI(room)%> style="float: right; color: #A9A9A9">Join</a>
       </div>
+      <a style="display: flex; float: right; justify-content: center; align-items: center;" href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+
+    </div>
     <% }) %>
     <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
       <form class="" action="/newroom" method="post" id="newroom-form">
-        <!-- <input type="text" class="new-room" name="" value="" placeholder="Room Name"> -->
         <textarea type="text" name="newroom" value="" class="new-room" contenteditable="" role="textbox" id="newroom" placeholder="Create New Room"></textarea>
         <a style="float: right; color: #A9A9A9" onclick="newroomform()">Create</a>
-        <!-- <button type="submit" name="button" style="float: right; margin:0; padding: 0;" action="">Create</button> -->
       </form>
     </div>
   </div>
@@ -77,7 +75,14 @@
 
   <!-- Possible user profile? -->
   <div class="main" id="profile" style="display:none;">
-    <h1>there's other shit here</h1>
+    <div class="" style="display: flex;">
+      <i class="fa fa-user-circle fa-5x" aria-hidden="true"></i>
+      <h1 style="display: flex; justify-content: center; align-items: center; margin: 20px;">Username</h1>
+    </div>
+    <div class="">
+      <h2 style="margin:20px 0 10px 0;">About <span><i class="fa fa-pencil" aria-hidden="true" style="transform: scale(0.7); margin: 0 0 0 5px;"></i></span> </h2>
+      <p style="font-family: 'Lato', sans-serif; font-size: 1.1rem; line-height: 2rem;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
   </div>
 </body>
 
