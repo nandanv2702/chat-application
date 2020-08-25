@@ -14,7 +14,37 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script type="text/javascript">
-  var roomName = `<%=roomName%>`
+  var roomName = `<%=roomName%>`;
+
+  // Socket.io
+  const socket = io(`ws://localhost:3000`);
+
+
+  //testing connection
+
+  socket.on('connect', () => {
+    console.log("connected?")
+    socket.send('Hello!');
+  })
+
+  //when a message is sent
+  socket.on('chat message', function(data) {
+    appendMessage(data, 'left');
+    updateHeight();
+  });
+
+  //when a new user connects
+  socket.on('user-connected', function(name) {
+    userStat(name, 'joined');
+    updateHeight();
+  });
+
+  //when a user disconnects
+  socket.on('user-disconnected', function(name) {
+    console.log('triggered')
+    userStat(name, 'disconnected');
+    updateHeight();
+  });
 </script>
 
 <nav class="sidebar">

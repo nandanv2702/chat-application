@@ -1,9 +1,6 @@
 // function for auto resizing textarea taken from Stack Overflow
 var name = 'not changed yet';
 
-// Socket.io
-var socket = io('/');
-
 // adds a new user to the DOM when someone joins
 function userStat(name, conn){
   var elem = document.createElement('p');
@@ -15,10 +12,13 @@ function userStat(name, conn){
 
 function init(){
   sidebarswitch();
-  name = document.getElementById('name').textContent.split(' joined!')[0];
-  // prompts for a name and emits that to all users
-  socket.emit('new-user', name, roomName);
-  userStat('You', 'joined');
+  if(window.location.href.split('/')[3] == 'rooms' && window.location.href.split('/').length == 5){
+    console.log(`location is: ${window.location.href.split('/')}`);
+    name = document.getElementById('name').textContent.split(' joined!')[0];
+    // prompts for a name and emits that to all users
+    socket.emit('new-user', name, roomName);
+    userStat('You', 'joined');
+  }
   if (window.attachEvent) {
     var observe = function(element, event, handler) {
       element.attachEvent('on' + event, handler);
@@ -82,26 +82,7 @@ function sidebarswitch(){
         };
       });
   });
-}
-
-//when a message is sent
-socket.on('chat message', function(data) {
-  appendMessage(data, 'left');
-  updateHeight();
-});
-
-//when a new user connects
-socket.on('user-connected', function(name) {
-  userStat(name, 'joined');
-  updateHeight();
-});
-
-//when a user disconnects
-socket.on('user-disconnected', function(name) {
-  console.log('triggered')
-  userStat(name, 'disconnected');
-  updateHeight();
-});
+};
 
 // appends the message to the body
 var msg_ID = 0;

@@ -101,7 +101,7 @@ app.route('/login')
     });
   });
 
-const rooms = {Name: {}, More: {}};
+const rooms = {Name: [], Other: []};
 
 app.route('/rooms')
 .post(function(req, res){
@@ -117,10 +117,10 @@ app.route('/rooms')
 });
 
 app.get('/rooms/:room', function(req, res){
-  if(req.isAuthenticated()){
+  if(req.isAuthenticated() && Object.keys(rooms) !== null){
     res.render('room', {name: req.user.name, roomName: req.params.room});
   } else {
-    res.redirect('/login')
+    res.redirect('/')
   };
 });
 
@@ -128,15 +128,21 @@ const users = {};
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('disconnect', () => {
-    socket.to(roomName).emit('user-disconnected', users[socket.id]);
-    socket.leave(roomName);
-    delete users[socket.id];
-    console.log('user disconnected');
-  });
 
-  socket.on('connect', (req) => {
-    io.to(roomName).emit('connection-msg', msg);
+    socket.on('disconnecting', () => {
+     const rooms = Object.keys(socket.rooms);
+     socket.to(rooms[1]).emit('user-disconnected', users[socket.id])
+     console.log(`rooms are: ${JSON.stringify(rooms)}`);
+     // the rooms array contains at least the socket ID
+   });
+
+  socket.on('disconnect', () => {
+    // getUserRooms(socket).forEach(room => {
+    //   socket.to(room).emit('user-disconnected', users[socket.id]);
+    //   delete users[socket.id];
+    // });
+    socket.rooms === {};
+    console.log('user disconnected');
   });
 
   socket.on('chat message', (msg, roomName) => {
@@ -149,10 +155,20 @@ io.on('connection', (socket) => {
     console.log("new user name is: " + name);
     users[socket.id] = name;
     socket.join(roomName);
-    console.log(`Users are: ${users}`);
-    socket.to(roomName).broadcast.emit('user-connected', name);
+    rooms[roomName].push(users[socket.id]);
+    console.log(`Users are: ${JSON.stringify(users)}`);
+    socket.to(roomName).emit('user-connected', name);
   })
 });
+
+function getUserRooms(socket){
+  return Object.entries(rooms).reduce((names, [name, room]) => {
+    if(room.users[socket.id] !== null){
+      names.push(name);
+    };
+    return names;
+  });
+};
 
 // this is one instance of 'app' which is why app.listen() would cause a EADDRINUSE error
 http.listen(port, () => {
