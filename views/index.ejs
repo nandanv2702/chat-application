@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- regular js -->
 <script type="text/javascript" src="js/index.js"></script>
 
@@ -51,9 +52,13 @@
   <div class="main" id="rooms">
     <h1>Rooms</h1>
     <% Object.keys(rooms).forEach(room => { %>
-        <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
+      <div class="" style="display: flex; flex-direction: row; height: inherit; margin: 0; padding: 0;">
+        <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem; float: left;">
           <%= room %> <a href=/rooms/<%=encodeURI(room)%> style="float: right; color: #A9A9A9">Join</a>
         </div>
+        <a style="display: flex; float: right; justify-content: center; align-items: center;" href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+
+      </div>
     <% }) %>
     <div class="neu-dark" style="margin: 20px; color: black; background-color: #add8e6; width: 300px; font-size: 1.2rem;">
       <form class="" action="/newroom" method="post" id="newroom-form">
