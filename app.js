@@ -51,7 +51,10 @@ passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('index', {name: req.user.name, rooms: rooms});
+    res.render('index', {
+      name: req.user.name,
+      rooms: rooms
+    });
   } else {
     res.redirect('/register');
   };
@@ -79,7 +82,7 @@ app.route('/register')
   });
 
 app.route('/login')
-  .get(function(req,res){
+  .get(function(req, res) {
     res.render('login');
   })
   .post(function(req, res) {
@@ -89,8 +92,8 @@ app.route('/login')
       password: req.body.password
     });
 
-    req.login(user, function(err){
-      if(err){
+    req.login(user, function(err) {
+      if (err) {
         console.log(`error during login: ${err}`);
         res.redirect('/')
       } else {
@@ -101,24 +104,32 @@ app.route('/login')
     });
   });
 
-const rooms = {Name: [], Other: []};
+const rooms = {
+  Name: [],
+  Other: []
+};
 
 app.route('/rooms')
-.post(function(req, res){
-  if (req.isAuthenticated()) {
-    if(rooms[req.body.room] !== null){
-      res.redirect('/')
-    };
-    rooms[req.body.room] = {users: {}};
-    res.redirect(req.body.room);
-} else {
-  res.redirect('/login')
-}
-});
+  .post(function(req, res) {
+    if (req.isAuthenticated()) {
+      if (rooms[req.body.room] !== null) {
+        res.redirect('/')
+      };
+      rooms[req.body.room] = {
+        users: {}
+      };
+      res.redirect(req.body.room);
+    } else {
+      res.redirect('/login')
+    }
+  });
 
-app.get('/rooms/:room', function(req, res){
-  if(req.isAuthenticated() && Object.keys(rooms) !== null){
-    res.render('room', {name: req.user.name, roomName: req.params.room});
+app.get('/rooms/:room', function(req, res) {
+  if (req.isAuthenticated() && Object.keys(rooms) !== null) {
+    res.render('room', {
+      name: req.user.name,
+      roomName: req.params.room
+    });
   } else {
     res.redirect('/')
   };
@@ -127,26 +138,25 @@ app.get('/rooms/:room', function(req, res){
 const users = {};
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
 
-    socket.on('disconnecting', () => {
-     const rooms = Object.keys(socket.rooms);
-     socket.to(rooms[1]).emit('user-disconnected', users[socket.id])
-     console.log(`rooms are: ${JSON.stringify(rooms)}`);
-     // the rooms array contains at least the socket ID
-   });
+  socket.on('disconnecting', () => {
+    const rooms = Object.keys(socket.rooms);
+    socket.to(rooms[1]).emit('user-disconnected', users[socket.id])
+    console.log(`rooms are: ${JSON.stringify(rooms)}`);
+    // the rooms array contains at least the socket ID
+  });
 
   socket.on('disconnect', () => {
-    // getUserRooms(socket).forEach(room => {
-    //   socket.to(room).emit('user-disconnected', users[socket.id]);
-    //   delete users[socket.id];
-    // });
     socket.rooms === {};
+    delete users[socket.id];
     console.log('user disconnected');
   });
 
   socket.on('chat message', (msg, roomName) => {
-    socket.to(roomName).broadcast.emit('chat message', {msg: msg, name: users[socket.id]});
+    socket.to(roomName).broadcast.emit('chat message', {
+      msg: msg,
+      name: users[socket.id]
+    });
     console.log('message: ' + msg);
   });
 
@@ -161,14 +171,6 @@ io.on('connection', (socket) => {
   })
 });
 
-function getUserRooms(socket){
-  return Object.entries(rooms).reduce((names, [name, room]) => {
-    if(room.users[socket.id] !== null){
-      names.push(name);
-    };
-    return names;
-  });
-};
 
 // this is one instance of 'app' which is why app.listen() would cause a EADDRINUSE error
 http.listen(port, () => {
