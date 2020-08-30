@@ -34,15 +34,35 @@ mongoose.connect('mongodb://localhost:27017/chatDB', {
   useCreateIndex: true
 });
 
+// for each user
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String
 });
 
+
+// for each message sent, will be appended to each room/personal chat
+const messageSchema = new mongoose.Schema({
+  user: String,
+  message_body: String,
+  created: {type: Date, default: Date.now}
+})
+
+// for each chat instance (room or personal) - users can be limited to two for personal chats
+const roomSchema = new mongoose.Schema({
+  name: {type: String, unique: true, lowercase: true},
+  users: [],
+  messages: []
+});
+
 userSchema.plugin(passportLocalMongoose);
 
 const User = new mongoose.model('User', userSchema);
+
+const Message = new mongoose.model('Message', messageSchema);
+
+const Chat = new mongoose.model('Chat', roomSchema);
 
 passport.use(User.createStrategy());
 
