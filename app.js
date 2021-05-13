@@ -34,10 +34,10 @@ mongoose.connect('mongodb://localhost:27017/chatDB', {
   useCreateIndex: true
 });
 
-// for each user
+// for each user - does this interfere with passport-local-mongoose's user.register(...) function?
 const userSchema = new mongoose.Schema({
   name: String,
-  email: String,
+  email: {type: String, unique: true},
   password: String
 });
 
@@ -62,7 +62,7 @@ const User = new mongoose.model('User', userSchema);
 
 const Message = new mongoose.model('Message', messageSchema);
 
-const Chat = new mongoose.model('Chat', roomSchema);
+const Room = new mongoose.model('Room', roomSchema);
 
 passport.use(User.createStrategy());
 
@@ -85,10 +85,7 @@ app.route('/register')
     res.render('register');
   })
   .post(function(req, res) {
-    User.register({
-      name: req.body.name,
-      username: req.body.username
-    }, req.body.password, function(err, user) {
+    User.register(new User({name: req.body.name, username: req.body.username}), req.body.password, function(err, user) {
       if (err) {
         console.log(err);
         console.log('error during registration');
