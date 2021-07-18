@@ -14,7 +14,8 @@ function init(){
   sidebarswitch();
   if(window.location.href.split('/')[3] == 'rooms' && window.location.href.split('/').length == 5){
     console.log(`location is: ${window.location.href.split('/')}`);
-    name = document.getElementById('name').textContent.split(' joined!')[0];
+    let name = document.getElementById('name').textContent.split(' joined!')[0];
+    console.log(`name is ${name}`)
     // prompts for a name and emits that to all users
     socket.emit('new-user', name, roomName);
     userStat('You', 'joined');

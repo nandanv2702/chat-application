@@ -37,7 +37,7 @@ mongoose.connect('mongodb://localhost:27017/chatDB', {
 // for each user - does this interfere with passport-local-mongoose's user.register(...) function?
 const userSchema = new mongoose.Schema({
   name: String,
-  email: {type: String, unique: true},
+  username: {type: String, unique: true},
   password: String
 });
 
@@ -84,15 +84,24 @@ app.route('/register')
   .get(function(req, res) {
     res.render('register');
   })
-  .post(function(req, res) {
-    User.register(new User({name: req.body.name, username: req.body.username}), req.body.password, function(err, user) {
+  .post(function(req, res) {  
+    console.log(req.body)
+
+    let user = {
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password
+    }
+
+    User.register(new User(user), req.body.password, function(err, user) {
       if (err) {
         console.log(err);
         console.log('error during registration');
         res.redirect('/register');
       } else {
+        console.log(`user was authenticated ${user}`)
         passport.authenticate('local')(req, res, function() {
-          res.redirect('/');
+            res.redirect('/');
         });
       };
     });
@@ -101,10 +110,10 @@ app.route('/register')
 app.route('/login')
   .get(function(req, res) {
     res.render('login');
+    console.log('rendering login')
   })
   .post(function(req, res) {
     const user = new User({
-      name: req.body.name,
       username: req.body.username,
       password: req.body.password
     });
@@ -115,6 +124,7 @@ app.route('/login')
         res.redirect('/')
       } else {
         passport.authenticate('local')(req, res, function() {
+          console.log('in the authenticate section for login')
           res.redirect('/');
         });
       }
@@ -142,13 +152,14 @@ app.route('/rooms')
   });
 
 app.get('/rooms/:room', function(req, res) {
-  if (req.isAuthenticated() && Object.keys(rooms) !== null) {
+  if (req.isAuthenticated() && Object.keys(rooms).indexOf(decodeURI(req.params.room)) !== -1) {
     res.render('room', {
       name: req.user.name,
       roomName: decodeURI(req.params.room)
     });
+    console.log(`user is in room ${decodeURI(req.params.room)}`)
   } else {
-    res.redirect('/')
+    res.redirect('/#rooms')
   };
 });
 
