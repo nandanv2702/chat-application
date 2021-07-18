@@ -182,6 +182,16 @@ const users = {};
 
 io.on('connection', (socket) => {
 
+  socket.on('new-user', (name, roomName) => {
+    console.log("room name is: " + roomName);
+    console.log("new user name is: " + name);
+    users[socket.id] = name;
+    socket.join(roomName);
+    rooms[decodeURI(roomName)].push(users[socket.id]);
+    console.log(`Users are: ${JSON.stringify(users)}`);
+    socket.to(roomName).emit('user-connected', name);
+  })
+
   socket.on('disconnecting', () => {
     const rooms = Object.keys(socket.rooms);
     socket.to(rooms[1]).emit('user-disconnected', users[socket.id])
@@ -202,16 +212,6 @@ io.on('connection', (socket) => {
     });
     console.log('message: ' + msg);
   });
-
-  socket.on('new-user', (name, roomName) => {
-    console.log("room name is: " + roomName);
-    console.log("new user name is: " + name);
-    users[socket.id] = name;
-    socket.join(roomName);
-    rooms[decodeURI(roomName)].push(users[socket.id]);
-    console.log(`Users are: ${JSON.stringify(users)}`);
-    socket.to(roomName).emit('user-connected', name);
-  })
 });
 
 

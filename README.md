@@ -5,7 +5,9 @@ This app also implements a new design trend called 'neumorphism' which is a mini
 Learn more about it [here](https://uxdesign.cc/neumorphism-can-we-make-it-more-accessible-15be5fe2ef28)!
 
 ## To-Do
-- [ ] Get socket.io rooms working again (solve client-side error)
+- [x] Get socket.io rooms working again (solve client-side error)
+- [ ] Solve room change / disconnect issue - randomly changes room names so socket emits to a "non-existent" room
+- [ ] Debug user disconnect event
 - [ ] Use MongoDB cluster online to store user login data (no chat history stored)
 - [ ] Implement functionality:
     - [ ] Edit personal information (name, about section)

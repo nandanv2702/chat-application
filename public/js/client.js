@@ -1,5 +1,5 @@
 // Socket.io
-const socket = io(`ws://localhost:3000`);
+const socket = io();
 
 socket.on('connect', () => {
   console.log("connected?")
