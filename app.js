@@ -4,7 +4,10 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+
+// const options = {'pingTimeout': 5000, 'pingInterval': 800};
+const io = require("socket.io")(http);
+
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
@@ -182,16 +185,6 @@ const users = {};
 
 io.on('connection', (socket) => {
 
-  socket.on('new-user', (name, roomName) => {
-    console.log("room name is: " + roomName);
-    console.log("new user name is: " + name);
-    users[socket.id] = name;
-    socket.join(roomName);
-    rooms[decodeURI(roomName)].push(users[socket.id]);
-    console.log(`Users are: ${JSON.stringify(users)}`);
-    socket.to(roomName).emit('user-connected', name);
-  })
-
   socket.on('disconnecting', () => {
     const rooms = Object.keys(socket.rooms);
     socket.to(rooms[1]).emit('user-disconnected', users[socket.id])
@@ -212,6 +205,65 @@ io.on('connection', (socket) => {
     });
     console.log('message: ' + msg);
   });
+
+  socket.on('new-user', (name, roomName) => {
+    console.log("room name is: " + roomName);
+    console.log("new user name is: " + name);
+    users[socket.id] = name;
+    socket.join(roomName);
+    rooms[decodeURI(roomName)].push(users[socket.id]);
+    console.log(`Users are: ${JSON.stringify(users)}`);
+    socket.to(roomName).emit('user-connected', name);
+  });
+
+  // trying to resolve timeout error - socket randomly disconnects client
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+
+  // socket.on('error', function(data){
+  
+  //   console.log("error section")
+  // });
+  
+  socket.on('reconnect', function(data){
+    
+    console.log("reconnect section")
+  });
+  
+  socket.on('reconnect_attempt', function(data){
+    
+    console.log("reconnect_attempt section")
+  });
+  
+  socket.on('reconnect_attempt', function(data){
+    
+    console.log("reconnect_attempt section")
+  });
+  
+  socket.on('reconnect_failed', function(data){
+    
+    console.log("reconnect_failed section")
+  });
+  
+  socket.on('reconnect_failed', function(data){
+    
+    console.log("reconnect_failed section")
+  });
+  
+
+  // stackoverflow connection error solution - resolves timeout by manually pinging
+  function sendHeartbeat(){
+    setTimeout(sendHeartbeat, 20000);
+    io.sockets.emit('ping', { beat : 1 });
+  }
+
+  socket.on('pong', function(data){
+      console.log("Pong received from client");
+  });
+
+  setTimeout(sendHeartbeat, 20000);
+
 });
 
 
