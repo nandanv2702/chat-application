@@ -7,12 +7,12 @@ Learn more about it [here](https://uxdesign.cc/neumorphism-can-we-make-it-more-a
 ## To-Do
 - [x] Get socket.io rooms working again (solve client-side error)
 - [ ] Solve room change / disconnect issue - randomly changes room names so socket emits to a "non-existent" room
-- [ ] Debug user disconnect event
-- [ ] Use MongoDB cluster online to store user login data (no chat history stored)
+- [x] Debug user disconnect event
+- [x] Use MongoDB cluster online to store user login data (no chat history stored)
 - [ ] Implement functionality:
     - [ ] Edit personal information (name, about section)
     - [ ] Chat with person by username (email ID) - most important
     - [ ] Rooms refresh live
 - [ ] Host online:
-    - [ ] How to switch socket port from localhost
+    - [x] How to switch socket port from localhost
     - [ ] Reorganize files into MVC framework, create separate "package" for socket.io code
