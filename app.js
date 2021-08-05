@@ -31,17 +31,21 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect('mongodb://localhost:27017/chatDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-});
+try {
+  mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  });
+} catch(err) {
+  console.log(`database error: ${err}`)
+}
+
 
 // for each user - does this interfere with passport-local-mongoose's user.register(...) function?
 const userSchema = new mongoose.Schema({
   name: String,
-  username: {type: String, unique: true},
-  password: String
+  username: {type: String, unique: true}
 });
 
 
@@ -253,16 +257,16 @@ io.on('connection', (socket) => {
   
 
   // stackoverflow connection error solution - resolves timeout by manually pinging
-  function sendHeartbeat(){
-    setTimeout(sendHeartbeat, 20000);
-    io.sockets.emit('ping', { beat : 1 });
-  }
+  // function sendHeartbeat(){
+  //   setTimeout(sendHeartbeat, 20000);
+  //   io.sockets.emit('ping', { beat : 1 });
+  // }
 
   socket.on('pong', function(data){
       console.log("Pong received from client");
   });
 
-  setTimeout(sendHeartbeat, 20000);
+  // setTimeout(sendHeartbeat, 20000);
 
 });
 
