@@ -75,11 +75,16 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+const rooms = {
+  Name: [],
+  Other: [],
+};
+
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('index', {
       name: req.user.name,
-      rooms,
+      rooms: rooms,
     });
   } else {
     res.redirect('/login');
@@ -136,11 +141,6 @@ app.route('/login')
       }
     });
   });
-
-const rooms = {
-  Name: [],
-  Other: [],
-};
 
 app.route('/rooms')
   .post((req, res) => {
