@@ -21,6 +21,7 @@ WIP
         - [ ] Change Register page 'name' to 'username' (only on front-end)
         - [ ] Save about page info to MongoDB
         - [ ] Add an edit button to change about text / to upload a photo - FileFS MongoDB (or cdn?)
+        - [ ] add 'deleteRoom' functionality (after pushing rooms to MongoDB)
     - [ ] Chat with person by username (email ID) - most important (in 'messages' section)
     - [ ] Rooms refresh live
 - [ ] Host online:
