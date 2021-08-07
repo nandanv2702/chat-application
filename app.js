@@ -75,15 +75,32 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Finds rooms and assigns it to 'rooms' to be rendered
-const rooms = {};
-Room.find({}, (err, result) => {
-  // eslint-disable-next-line array-callback-return
-  result.map((room) => {
-    rooms[room.name] = [];
+let rooms = {};
+
+function getRooms() {
+  Room.find({}, (err, result) => {
+    const roomNames = [];
+    // eslint-disable-next-line array-callback-return
+    result.map((room) => {
+      if (!Object.keys(rooms).includes(room)) {
+        rooms[room.name] = [];
+        roomNames.push(room.name);
+      }
+    });
+
+    // eslint-disable-next-line array-callback-return
+    Object.keys(rooms).map((room) => {
+      if (!roomNames.includes(room)) {
+        delete rooms[room];
+      }
+    });
   });
-});
+}
+
+getRooms();
 
 app.get('/', (req, res) => {
+  getRooms();
   if (req.isAuthenticated()) {
     res.render('index', {
       name: req.user.name,
