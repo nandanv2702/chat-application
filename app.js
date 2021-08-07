@@ -69,7 +69,7 @@ const roomSchema = new mongoose.Schema({
   messages: [],
 });
 
-userSchema.plugin(passportLocalMongoose);
+
 
 const User = new mongoose.model('User', userSchema);
 
@@ -142,13 +142,14 @@ app.route('/register')
   .post((req, res) => {
     console.log(req.body);
 
-    const user = {
+    const user = { local: {
       name: req.body.name,
       username: req.body.username,
       password: req.body.password,
+    }   
     };
 
-    User.register(new User({ local: user }), req.body.password, (err, { local: user }) => {
+    User.register(new User(user), req.body.password, (err, user) => {
       if (err) {
         console.log(err);
         console.log('error during registration');
