@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const app = express();
 const http = require('http').createServer(app);
@@ -44,8 +45,14 @@ try {
 
 // for each user - does this interfere with passport-local-mongoose's user.register(...) function?
 const userSchema = new mongoose.Schema({
-  name: String,
-  username: { type: String, unique: true },
+  local: {
+    name: String,
+    username: { type: String, unique: true },
+  },
+  google: {
+    name: String,
+    username: { type: String, unique: true },
+  },
 });
 
 // for each message sent, will be appended to each room/personal chat
@@ -72,8 +79,45 @@ const Room = new mongoose.model('Room', roomSchema);
 
 passport.use(User.createStrategy());
 
+// Google OAuth20
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// temporary user register function
+function registerUser(profile, req) {
+  console.log(profile)
+  const user = { google: {
+    name: profile.displayName,
+    username: profile.given_name,
+  },
+    
+  };
+
+  console.log(`user is ${user.google.username}`)
+
+  User.register(new User(user), (err, user) => {
+    if (err) {
+      console.log(err);
+      console.log('error during registration');
+      res.redirect('/register');
+    } else {
+      console.log(`user was authenticated ${user}`);
+    }
+  });
+}
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.CALLBACK_URL,
+  passReqToCallback: true,
+},
+((request, accessToken, refreshToken, profile, done) => {
+  // registerUser({ googleId: profile.id }, (err, user) => done(err, user));
+    console.log("here")
+    registerUser(profile, request);
+})));
 
 const rooms = {
   Name: [],
@@ -84,7 +128,7 @@ app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('index', {
       name: req.user.name,
-      rooms: rooms,
+      rooms,
     });
   } else {
     res.redirect('/login');
@@ -104,7 +148,7 @@ app.route('/register')
       password: req.body.password,
     };
 
-    User.register(new User(user), req.body.password, (err, user) => {
+    User.register(new User({ local: user }), req.body.password, (err, { local: user }) => {
       if (err) {
         console.log(err);
         console.log('error during registration');
@@ -125,8 +169,10 @@ app.route('/login')
   })
   .post((req, res) => {
     const user = new User({
-      username: req.body.username,
-      password: req.body.password,
+      local: {
+        username: req.body.username,
+        password: req.body.password,
+      },
     });
 
     req.login(user, (err) => {
@@ -141,6 +187,18 @@ app.route('/login')
       }
     });
   });
+
+app.get('/auth/google',
+  passport.authenticate('google', {
+    scope:
+      ['email', 'profile'],
+  }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/',
+  }));
 
 app.route('/rooms')
   .post((req, res) => {
