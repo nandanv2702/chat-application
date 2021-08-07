@@ -59,7 +59,6 @@ const messageSchema = new mongoose.Schema({
 const roomSchema = new mongoose.Schema({
   name: { type: String, unique: true, lowercase: true },
   users: [],
-  messages: [],
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -75,16 +74,20 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const rooms = {
-  Name: [],
-  Other: [],
-};
+// Finds rooms and assigns it to 'rooms' to be rendered
+const rooms = {};
+Room.find({}, (err, result) => {
+  // eslint-disable-next-line array-callback-return
+  result.map((room) => {
+    rooms[room.name] = [];
+  });
+});
 
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('index', {
       name: req.user.name,
-      rooms: rooms,
+      rooms,
     });
   } else {
     res.redirect('/login');
