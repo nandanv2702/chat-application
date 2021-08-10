@@ -113,8 +113,7 @@ function updateHeight() {
 // to create a new room
 function newroomform() {
   const text = document.getElementById('newroom-form').newroom.value.replace(/\s/g, ' ');
-  console.log(`text is ${text}`);
-  console.log(`encoded is: ${encodeURI(text)}`);
+
   if (text !== '' && text !== ' ') {
     document.getElementById('newroom-form').submit();
   }

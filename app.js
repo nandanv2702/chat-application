@@ -37,6 +37,7 @@ try {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   });
 } catch (err) {
   console.log(`database error: ${err}`);
@@ -75,7 +76,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Finds rooms and assigns it to 'rooms' to be rendered
-let rooms = {};
+const rooms = {};
 
 function getRooms() {
   Room.find({}, (err, result) => {
@@ -179,11 +180,23 @@ app.route('/rooms')
 
 app.get('/rooms/:room', (req, res) => {
   if (req.isAuthenticated() && Object.keys(rooms).indexOf(decodeURI(req.params.room)) !== -1) {
-    res.render('room', {
-      name: req.user.name,
-      roomName: decodeURI(req.params.room),
-    });
+    const roomName = decodeURI(req.params.room);
+
+    rooms[roomName].push(req.user.username);
     console.log(`user is in room ${decodeURI(req.params.room)}`);
+
+    console.log(`users are ${rooms[roomName]}`);
+
+    Room.updateOne({ name: roomName }, {
+      name: roomName.toLowerCase(),
+      users: rooms[roomName],
+    }, (err, result) => console.log(result))
+      .then(() => {
+        res.render('room', {
+          name: req.user.name,
+          roomName,
+        });
+      });
   } else {
     res.redirect('/#rooms');
   }
@@ -200,8 +213,12 @@ app.get('/logout', (req, res) => {
 
 app.post('/newroom', (req, res) => {
   const newRoomName = req.body.newroom.replace(/\s\s+/g, ' ');
-  rooms[newRoomName] = [];
-  res.redirect(`/rooms/${newRoomName}`);
+
+  Room.create({ name: newRoomName, users: [] }, (err) => {
+    if (err) console.log(err);
+    rooms[newRoomName] = [];
+    res.redirect(`/rooms/${newRoomName}`);
+  });
 });
 
 const users = {};
@@ -235,6 +252,8 @@ io.on('connection', (socket) => {
     socket.join(roomName);
     rooms[decodeURI(roomName)].push(users[socket.id]);
     console.log(`Users are: ${JSON.stringify(users)}`);
+
+    Room.findOneAndUpdate({ room: roomName }, { users: rooms[decodeURI(roomName)] });
     socket.to(roomName).emit('user-connected', name);
   });
 
